@@ -3,11 +3,27 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
+
+import createSagaMiddleware from 'redux-saga';
+import userReducer from './reducers/userReducer';
+import mySaga from './sagas/userSaga';
+import { Provider } from 'react-redux';
+
+const sagaMiddleware = createSagaMiddleware();
+const store = configureStore({
+  reducer: userReducer,
+  middleware: [...getDefaultMiddleware(), sagaMiddleware]
+})
+sagaMiddleware.run(mySaga);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider >
   </React.StrictMode>
 );
 
